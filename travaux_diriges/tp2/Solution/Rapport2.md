@@ -66,14 +66,6 @@ On observe un meilleur speedup, notamment pour 8 processus :
 
 Cette amélioration montre que le déséquilibre de charge était un facteur limitant important dans la version par blocs.
 
-Cependant, cette stratégie présente aussi des inconvénients :
-- la reconstruction de l’image est plus complexe (lignes non contiguës),
-- un léger surcoût est introduit lors du rassemblement et du réordonnancement,
-- la stratégie est adaptée à cette zone de l’image ; pour un autre zoom ou une autre région, elle pourrait ne plus être optimale.
-
-Ainsi, la répartition cyclique constitue une meilleure stratégie statique, mais elle reste dépendante de la structure du problème.
-
-
 ## Partie 3 — Stratégie maître-esclave (Q3)
 
 ### Résultats
@@ -105,12 +97,6 @@ Par rapport aux autres approches :
 - Elle est nettement meilleure que la version par blocs (Q1) en termes d’équilibrage.
 - Elle reste cependant moins performante que la répartition cyclique (Q2) dans ce cas précis, car l’envoi ligne par ligne génère beaucoup de messages et le processus maître peut devenir un goulot d’étranglement.
 
-### Conclusion
-
-La stratégie maître-esclave garantit un excellent équilibrage dynamique, indépendamment de la complexité des lignes à calculer.  
-Cependant, le coût des communications et la centralisation
-
-
 ## 2.b – Produit matrice–vecteur par lignes
 
 On découpe la matrice par blocs de lignes entre `nbp` tâches.  
@@ -133,7 +119,7 @@ Chaque processus calcule uniquement sa partie du vecteur résultat :
 \[
 v[i_0:i_1]
 \]
-puis on reconstruit le vecteur complet sur **toutes** les tâches via `MPI_Allgather`.
+puis on reconstruit le vecteur complet sur toutes les tâches via `MPI_Allgather`.
 
 ---
 
